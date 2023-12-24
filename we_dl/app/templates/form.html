@@ -1,0 +1,24 @@
+<form method="post" id="myForm">
+    {% csrf_token %}
+    {{ form.dropdown_list }}
+    <br>
+
+    <div id="searchBox" style="display: none;">
+        {{ form.search_box }}
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    document.getElementById('id_dropdown_list').addEventListener('change', function() {
+        var selectedOption = this.value;
+        var searchBox = document.getElementById('searchBox');
+
+        if (selectedOption === 'youtube') {
+            searchBox.style.display = 'block';
+        } else {
+            searchBox.style.display = 'none';
+        }
+    });
+</script>
