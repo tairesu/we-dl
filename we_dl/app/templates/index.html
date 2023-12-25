@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'app/wedl.css'%}">
+		<title>Hello, world!</title>
+	</head>
+	<body>
+	<nav>
+		<object type="image/svg+xml" data="{% static 'app/images/wedl.svg' %}">
+			
+		</object>
+	</nav>
+	<div id="services" class="">
+		<p><strong>1) </strong>Choose a service. </p>
+		<div class="container col-sm-12">
+			<div class="row row-cols-2">
+				<div class="col">
+					<button id="yt" class="" ></button>
+				</div>
+				<div class="col">
+					<button id="sz" class="" ></button>
+				</div>
+				<div class="col">
+					<button id="sp" class="" ></button>
+				</div>
+				<div class="col">
+					<button id="mc" class="" ></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="selected-service">
+		<div label="yt">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2">
+				<div class="input-group-append btn-contain">
+					<button class="input-group-text" id="basic-addon2"></button>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row result">
+					<div class="col-3 thumbnail">
+						<img src="{% static 'app/images/ytmusic.png' %}">
+					</div>
+					<div class="col-7 info">
+						<strong>Sonder - What you heard</strong>
+						<p>uploaded by 'Wicked Chill'</p>
+						<p>4 minutes 11 seconds</p>
+						<p>331k views</p>
+
+					</div>
+					<div class="col-2">
+						<button class="add_queue" identifier="noienfiwe" >+</button>
+					</div>
+				</div>
+				<div class="row result">
+					<div class="col-3 thumbnail">
+						<img src="{% static 'app/images/ytmusic.png' %}">
+					</div>
+					<div class="col-7 info">
+						<strong>Smino - Settle Down</strong>
+						<p>uploaded by 'Wicked Chill'</p>
+						<p>4 minutes 11 seconds</p>
+						<p>331k views</p>
+
+					</div>
+					<div class="col-2">
+						<button class="add_queue" identifier="ascubcuas">+</button>
+					</div>
+				</div>
+			</div>
+			<form action="#" style="display:none;" method="get">
+				<select name="service">
+					<option value="spotify">Spotify</option>
+					<option value="youtube">Youtube</option>
+					<option value="shazaam">Shazaam</option>
+				</select>
+				<input type="text" name="selection">
+				<input type="submit">
+			</form>  
+		</div>
+		<div label="mc">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Search Mixcloud" aria-label="Recipient's username" aria-describedby="basic-addon2">
+				<div class="input-group-append btn-contain">
+					<button class="input-group-text" id="basic-addon2"></button>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div id="queue">
+		<h1 class="display-5"><span id="queue_count">0</span> in queue</h1>
+		<div id="dl-list" class=" container">
+			
+		</div>
+	</div>
+	<div>
+		
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		let dl_list = {};
+		$("#services button").each((i,btn) => {
+			$(btn).on('click', (e) => {
+				$("div[label]").hide();
+				$("#selected-service").show();
+				$("div[label='" + e.target.id + "']").show();
+			});
+		});
+		function elemtodict(ele, identifier) {
+			let title = $(ele).find("strong").html();
+			let thumbnail = $(ele).find("img").attr('src');
+			let duration = $(ele).find("p")[1];
+			let channel = $(ele).find("p")[0];
+			
+
+			dl_list[identifier] = {
+				'title': title, 
+				'thumbnail': thumbnail,
+				'duration':duration.innerHTML,
+				'channel':channel.innerHTML
+			};
+			
+		}
+		function alterqueue(){
+			let dl_list_keys = Object.keys(dl_list);
+
+			$("#queue_count").html(dl_list_keys.length);
+			let list_html = $("#dl-list");
+			list_html.empty();
+
+			dl_list_keys.forEach((key)=>{
+				let result = dl_list[key];
+				let row = document.createElement("div");
+				row.className = "row";
+
+				let div_chk = document.createElement("div");
+				let chkbox = document.createElement("input");
+
+				div_chk.className = "col-1";
+				chkbox.type = "checkbox";
+				chkbox.checked = 'True';
+				chkbox.name = "nuosfs";
+				div_chk.appendChild(chkbox);
+
+				let div_thmb = document.createElement("div");
+				let thmb = document.createElement("img");
+				div_thmb.className ="col-3";
+				thmb.src = result['thumbnail'];
+				div_thmb.appendChild(thmb);
+
+				let div_info = document.createElement("div");
+				let title = document.createElement("strong");
+				let channel = document.createElement("p");
+				title.innerHTML = result['title'];
+				channel.innerHTML = result['channel'];
+				div_info.className = "col";
+				div_info.appendChild(title);
+				div_info.appendChild(channel);
+
+
+				let div_time = document.createElement("div");
+				let time = document.createElement("p");
+				time.innerHTML = result['duration'];
+				div_time.className = "col-2";
+				div_time.appendChild(time);
+
+
+				row.appendChild(div_chk);
+				row.appendChild(div_thmb);
+				row.appendChild(div_info);
+				row.appendChild(div_time);
+
+				list_html.append(row);
+			});
+		}
+		$(".add_queue").each((i, btn) => {
+			$(btn).on('click', (e) => {
+				if(dl_list.hasOwnProperty($(btn).attr('identifier'))) {
+					delete dl_list[$(btn).attr('identifier')];
+					$(btn).html("+");
+				} else {
+					//adds elem to dl_list
+					elemtodict($(btn).parent().parent(), $(btn).attr('identifier'));
+					$(btn).html("-");
+				}
+				alterqueue();
+			});
+		});
+
+	</script>
+	</body>
+</html>

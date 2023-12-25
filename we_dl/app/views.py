@@ -18,3 +18,4 @@ def index(request):
     else:
         form = MyForm()
     return render(request, 'form.html', {'form': form})
+
