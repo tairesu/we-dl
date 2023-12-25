@@ -38,52 +38,34 @@
 	<div id="selected-service">
 		<div label="yt">
 			<div class="input-group mb-3">
-				<input type="text" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2">
-				<div class="input-group-append btn-contain">
-					<button class="input-group-text" id="basic-addon2"></button>
-				</div>
+				<form method="post" id="myForm">
+					{% csrf_token %}
+					<!-- <input type="text" id="searchBox" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
+					{{ form.search_box }}
+					<div class="input-group-append btn-contain">
+						<button type="submit" class="input-group-text" id="basic-addon2"></button>
+					</div>
+				</form>
 			</div>
 			<div class="container">
-				<div class="row result">
-					<div class="col-3 thumbnail">
-						<img src="{% static 'app/images/ytmusic.png' %}">
-					</div>
-					<div class="col-7 info">
-						<strong>Sonder - What you heard</strong>
-						<p>uploaded by 'Wicked Chill'</p>
-						<p>4 minutes 11 seconds</p>
-						<p>331k views</p>
+				{% for song in song_data %}
+					<div class="row result">
+						<div class="col-3 thumbnail">
+							<img src="{{ song.thumbnails.0 }}">
+						</div>
+						<div class="col-7 info">
+							<strong>{{ song.title }}</strong>
+							<p>uploaded by '{{ song.channel }}'</p>
+							<p>{{ song.duration }}</p>
+							<p>{{ song.views }}</p>
 
+						</div>
+						<div class="col-2">
+							<button class="add_queue" identifier="{{ song.id }}" >+</button>
+						</div>
 					</div>
-					<div class="col-2">
-						<button class="add_queue" identifier="noienfiwe" >+</button>
-					</div>
-				</div>
-				<div class="row result">
-					<div class="col-3 thumbnail">
-						<img src="{% static 'app/images/ytmusic.png' %}">
-					</div>
-					<div class="col-7 info">
-						<strong>Smino - Settle Down</strong>
-						<p>uploaded by 'Wicked Chill'</p>
-						<p>4 minutes 11 seconds</p>
-						<p>331k views</p>
-
-					</div>
-					<div class="col-2">
-						<button class="add_queue" identifier="ascubcuas">+</button>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
-			<form action="#" style="display:none;" method="get">
-				<select name="service">
-					<option value="spotify">Spotify</option>
-					<option value="youtube">Youtube</option>
-					<option value="shazaam">Shazaam</option>
-				</select>
-				<input type="text" name="selection">
-				<input type="submit">
-			</form>  
 		</div>
 		<div label="mc">
 			<div class="input-group mb-3">
