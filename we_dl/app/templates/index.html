@@ -37,53 +37,35 @@
 	</div>
 	<div id="selected-service">
 		<div label="yt">
+				<form method="post" id="myForm">
 			<div class="input-group mb-3">
-				<input type="text" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2">
-				<div class="input-group-append btn-contain">
-					<button class="input-group-text" id="basic-addon2"></button>
-				</div>
+					{% csrf_token %}
+					<!-- <input type="text" id="searchBox" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
+					{{ form.search_box }}
+					<div class="input-group-append btn-contain">
+						<button type="submit" class="input-group-text" id="basic-addon2"></button>
+					</div>
 			</div>
+				</form>
 			<div class="container">
-				<div class="row result">
-					<div class="col-3 thumbnail">
-						<img src="{% static 'app/images/ytmusic.png' %}">
-					</div>
-					<div class="col-7 info">
-						<strong>Sonder - What you heard</strong>
-						<p>uploaded by 'Wicked Chill'</p>
-						<p>4 minutes 11 seconds</p>
-						<p>331k views</p>
+				{% for song in song_data %}
+					<div class="row result">
+						<div class="col-3 thumbnail">
+							<img src="{{ song.thumbnails.0 }}">
+						</div>
+						<div class="col-7 info">
+							<strong>{{ song.title }}</strong>
+							<p>uploaded by '{{ song.channel }}'</p>
+							<p>{{ song.duration }}</p>
+							<p>{{ song.views }}</p>
 
+						</div>
+						<div class="col-2">
+							<button class="add_queue" identifier="{{ song.id }}" >+</button>
+						</div>
 					</div>
-					<div class="col-2">
-						<button class="add_queue" identifier="noienfiwe" >+</button>
-					</div>
-				</div>
-				<div class="row result">
-					<div class="col-3 thumbnail">
-						<img src="{% static 'app/images/ytmusic.png' %}">
-					</div>
-					<div class="col-7 info">
-						<strong>Smino - Settle Down</strong>
-						<p>uploaded by 'Wicked Chill'</p>
-						<p>4 minutes 11 seconds</p>
-						<p>331k views</p>
-
-					</div>
-					<div class="col-2">
-						<button class="add_queue" identifier="ascubcuas">+</button>
-					</div>
-				</div>
+				{% endfor %}
 			</div>
-			<form action="#" style="display:none;" method="get">
-				<select name="service">
-					<option value="spotify">Spotify</option>
-					<option value="youtube">Youtube</option>
-					<option value="shazaam">Shazaam</option>
-				</select>
-				<input type="text" name="selection">
-				<input type="submit">
-			</form>  
 		</div>
 		<div label="mc">
 			<div class="input-group mb-3">
@@ -107,10 +89,20 @@
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<script type="text/javascript">
+		{% if song_data %}
+		
+		$("#selected-service").show();
+		$("div[label='yt']").show();
+		{% endif %}
+		$("#myForm #id_search_box").attr({
+			'placeholder': 'Search Youtube',
+			'aria-describedby': 'basic-addon2',
+			'class':'form-control'
+		});
 		let dl_list = {};
 		$("#services button").each((i,btn) => {
 			$(btn).on('click', (e) => {
