@@ -10,8 +10,9 @@ def index(request):
             video_data = YoutubeSearch(search_query, max_results=5).to_dict()
             context = {
                 'search_query': search_query,
-                'song_data': video_data
-                
+                'song_data': video_data,
+                'form':form
+
             }
             return render(request, 'index.html', context)
     else:
