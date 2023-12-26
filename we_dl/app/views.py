@@ -11,6 +11,7 @@ def index(request):
             context = {
                 'search_query': search_query,
                 'song_data': video_data
+                
             }
             return render(request, 'index.html', context)
     else:
