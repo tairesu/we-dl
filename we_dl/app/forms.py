@@ -1,10 +1,7 @@
 from django import forms
 
-class MyForm(forms.Form):
+class Search(forms.Form):
     search_box = forms.CharField(label='Search')
-    dropdown_list = forms.ChoiceField(choices=[
-        ('youtube', 'Youtube'),
-        ('spotify', 'Spotify'),
-        ('shazam', 'Shazam'),
-        ('mixcloud','Mixcloud')
-    ])
+
+class DlQueue(forms.Form):
+	queue = forms.CharField(label='Queue')

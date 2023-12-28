@@ -41,7 +41,7 @@
 			<div class="input-group mb-3">
 					{% csrf_token %}
 					<!-- <input type="text" id="searchBox" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
-					{{ form.search_box }}
+					{{ search.search_box }}
 					<div class="input-group-append btn-contain">
 						<button type="submit" class="input-group-text" id="basic-addon2"></button>
 					</div>
@@ -82,6 +82,11 @@
 		<div id="dl-list" class=" container">
 			
 		</div>
+		<form method="post">
+			{% csrf_token %}
+			{{dl_queue.queue}}
+			<button type="submit">Download</button>
+		</form>
 	</div>
 	<div>
 		
