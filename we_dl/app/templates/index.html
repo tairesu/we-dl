@@ -58,6 +58,7 @@
 							<p>uploaded by '{{ song.channel }}'</p>
 							<p>{{ song.duration }}</p>
 							<p>{{ song.views }}</p>
+							<p hidden>{{ song.url_suffix }}</p>
 
 						</div>
 						<div class="col-2">
@@ -123,13 +124,15 @@
 			let thumbnail = $(ele).find("img").attr('src');
 			let duration = $(ele).find("p")[1];
 			let channel = $(ele).find("p")[0];
+			let videoid = $(ele).find("p")[3];
 			
 
 			dl_list[identifier] = {
 				'title': title, 
 				'thumbnail': thumbnail,
 				'duration':duration.innerHTML,
-				'channel':channel.innerHTML
+				'channel':channel.innerHTML,
+				'url_suffix': "https://www.youtube.com"+ decodeURIComponent(videoid.innerHTML)
 			};
 			
 		}
@@ -137,50 +140,57 @@
 			let dl_list_keys = Object.keys(dl_list);
 
 			$("#queue_count").html(dl_list_keys.length);
+			$("#id_queue").val(JSON.stringify(dl_list)) 
 			let list_html = $("#dl-list");
 			list_html.empty();
 
 			dl_list_keys.forEach((key)=>{
 				let result = dl_list[key];
 				let row = document.createElement("div");
-				row.className = "row";
 
+				let div_thmb = document.createElement("div");
 				let div_chk = document.createElement("div");
-				let chkbox = document.createElement("input");
+				let div_time = document.createElement("div");
+				let div_info = document.createElement("div");
+				let div_url = document.createElement("div");
 
+				let chkbox = document.createElement("input");
+				let thmb = document.createElement("img");
+				let title = document.createElement("strong");
+				let channel = document.createElement("p");
+				let time = document.createElement("p");
+				let url = document.createElement("p");
+
+				row.className = "row";
 				div_chk.className = "col-1";
+				div_thmb.className ="col-3";
+				div_info.className = "col";
+				div_url.className = "col hidden";
+				div_time.className = "col-2";
+
 				chkbox.type = "checkbox";
 				chkbox.checked = 'True';
 				chkbox.name = "nuosfs";
-				div_chk.appendChild(chkbox);
 
-				let div_thmb = document.createElement("div");
-				let thmb = document.createElement("img");
-				div_thmb.className ="col-3";
 				thmb.src = result['thumbnail'];
-				div_thmb.appendChild(thmb);
-
-				let div_info = document.createElement("div");
-				let title = document.createElement("strong");
-				let channel = document.createElement("p");
+				time.innerHTML = result['duration'];
 				title.innerHTML = result['title'];
 				channel.innerHTML = result['channel'];
-				div_info.className = "col";
+				url.innerHTML = result['url_suffix']
+
+
+				div_chk.appendChild(chkbox);
+				div_thmb.appendChild(thmb);
 				div_info.appendChild(title);
 				div_info.appendChild(channel);
-
-
-				let div_time = document.createElement("div");
-				let time = document.createElement("p");
-				time.innerHTML = result['duration'];
-				div_time.className = "col-2";
 				div_time.appendChild(time);
-
+				div_url.appendChild(url);
 
 				row.appendChild(div_chk);
 				row.appendChild(div_thmb);
 				row.appendChild(div_info);
 				row.appendChild(div_time);
+				row.appendChild(div_url)
 
 				list_html.append(row);
 			});

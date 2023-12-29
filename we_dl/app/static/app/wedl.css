@@ -127,3 +127,6 @@ div[label='yt'] .add_queue {
 #selected-service .container{
 	padding:0;
 }
+.hidden{
+	display: none;
+}
