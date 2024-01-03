@@ -119,6 +119,8 @@
 				$("div[label='" + e.target.id + "']").show();
 			});
 		});
+
+		//Turns element innerHTML into dictionary values for 'dl_list' 
 		function elemtodict(ele, identifier) {
 			let title = $(ele).find("strong").html();
 			let thumbnail = $(ele).find("img").attr('src');
@@ -132,16 +134,17 @@
 				'thumbnail': thumbnail,
 				'duration':duration.innerHTML,
 				'channel':channel.innerHTML,
-				'url_suffix': "https://www.youtube.com"+ decodeURIComponent(videoid.innerHTML)
+				'url_suffix': "https://www.youtube.com"+ videoid.innerHTML
 			};
 			
 		}
+		// Onclick, repopulate queue section with what's in 'dl_list'
 		function alterqueue(){
 			let dl_list_keys = Object.keys(dl_list);
+			let list_html = $("#dl-list");
 
 			$("#queue_count").html(dl_list_keys.length);
 			$("#id_queue").val(JSON.stringify(dl_list)) 
-			let list_html = $("#dl-list");
 			list_html.empty();
 
 			dl_list_keys.forEach((key)=>{
