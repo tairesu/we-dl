@@ -130,3 +130,33 @@ div[label='yt'] .add_queue {
 .hidden{
 	display: none;
 }
+#ondlfinish {
+	position:fixed;
+	z-index: 3;
+	display:flex;
+	background:rgba(0,0,0,0.9);
+	width:100%;
+	height:100%;
+	justify-content: center;
+	align-items: center;
+}
+#ondlfinish div {
+	height:50%;
+	text-align: center;
+	background-color: white; 
+	vertical-align: middle
+}
+#ondlfinish .rotateme {
+	animation: 1.5s infinite linear rotate;
+	width:10em;
+
+}
+@keyframes rotate {
+	from {
+		rotate:0deg
+	}
+
+	to {
+		rotate:360deg;
+	}
+}

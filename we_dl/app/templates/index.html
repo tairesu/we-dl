@@ -11,6 +11,20 @@
 		<title>Hello, world!</title>
 	</head>
 	<body>
+		<div id="ondlfinish" style="display: none">
+			{% if dl_list %}
+			<div id="dl_finished" class="col-6">
+				<p class="display-4">Download Finished</p>
+				<button id="hidefinished">Download More</button>
+			</div>
+			{% else %}
+			<div id="dl_started" class="col-6 ">
+				<p class="display-4"> Downloading <span class="queue_count"></span> items </p>
+				<img class="rotateme" src="{% static 'app/images/loading.png'%}">
+			</div>
+			{% endif %}
+
+		</div>
 	<nav>
 		<object type="image/svg+xml" data="{% static 'app/images/wedl.svg' %}">
 			
@@ -37,7 +51,9 @@
 	</div>
 	<div id="selected-service">
 		<div label="yt">
+			
 				<form method="post" id="myForm">
+			
 			<div class="input-group mb-3">
 					{% csrf_token %}
 					<!-- <input type="text" id="searchBox" class="form-control" placeholder="Search Youtube" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
@@ -79,14 +95,14 @@
 		
 	</div>
 	<div id="queue">
-		<h1 class="display-5"><span id="queue_count">0</span> in queue</h1>
+		<h1 class="display-5"><span class="queue_count">0</span> in queue</h1>
 		<div id="dl-list" class=" container">
 			
 		</div>
-		<form method="post">
+		<form id="dl_form" method="post">
 			{% csrf_token %}
 			{{dl_queue.queue}}
-			<button type="submit">Download</button>
+			<button type="submit" id="download_queue">Download</button>
 		</form>
 	</div>
 	<div>
@@ -106,11 +122,16 @@
 	        scrollTop: $("#selected-service").offset().top
 	    }, 100);
 		{% endif %}
+		{% if dl_list %}
+			$("#ondlfinish").show();
+		{% endif %}
 		$("#myForm #id_search_box").attr({
 			'placeholder': 'Search Youtube',
 			'aria-describedby': 'basic-addon2',
-			'class':'form-control'
+			'class':'form-control',
+
 		});
+		$("#dl_form input").hide();
 		let dl_list = {};
 		$("#services button").each((i,btn) => {
 			$(btn).on('click', (e) => {
@@ -143,7 +164,10 @@
 			let dl_list_keys = Object.keys(dl_list);
 			let list_html = $("#dl-list");
 
-			$("#queue_count").html(dl_list_keys.length);
+			for(let i=0; i<$(".queue_count").length;i++) {
+				var counter = $(".queue_count")[i];
+				counter.innerHTML = dl_list_keys.length;
+			}
 			$("#id_queue").val(JSON.stringify(dl_list)) 
 			list_html.empty();
 
@@ -198,6 +222,13 @@
 				list_html.append(row);
 			});
 		}
+		$("#hidefinished").on('click', ()=>{
+			window.location = window.location.href;
+		})
+		$("#download_queue").on('click', ()=>{
+			$("#ondlfinish").show();
+
+		})
 		$(".add_queue").each((i, btn) => {
 			$(btn).on('click', (e) => {
 				if(dl_list.hasOwnProperty($(btn).attr('identifier'))) {

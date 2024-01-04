@@ -22,7 +22,8 @@ def index(request):
 			        'search_query': search_query,
 			        'song_data': (video_data),
 			        'search':form,
-			        'dl_queue':DlQueue()
+			        'dl_queue':DlQueue(),
+			        'dl_list':''
 
 			    }
 			    return render(request, 'index.html', context)
@@ -37,9 +38,11 @@ def index(request):
 			    	dlsong.dl(dl_list[song]['url_suffix'])
 
 			    context = {
-			    	'list_str': dl_list
+			    	'dl_list': "Download Finished",
+			    	'search': Search(),
+			        'dl_queue':DlQueue()
 			    }
 
-			    return render(request, 'dl.html', context)
+			    return render(request, 'index.html', context)
 	return render(request, 'index.html', {'search': Search(),'dl_queue':DlQueue()})
 
