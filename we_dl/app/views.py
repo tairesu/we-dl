@@ -39,6 +39,7 @@ def index(request):
 
 			    context = {
 			    	'dl_list': "Download Finished",
+			    	'mp3srcs': ['/home/tyro/music/' + dl_list[vid_id]['title'] + '.mp3' for vid_id in dl_list.keys()],
 			    	'search': Search(),
 			        'dl_queue':DlQueue()
 			    }

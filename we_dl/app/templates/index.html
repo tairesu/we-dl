@@ -11,16 +11,28 @@
 		<title>Hello, world!</title>
 	</head>
 	<body>
-		<div id="ondlfinish" style="display: none">
+		<div id="ondlfinish" class="hidden">
 			{% if dl_list %}
-			<div id="dl_finished" class="col-6">
-				<p class="display-4">Download Finished</p>
-				<button id="hidefinished">Download More</button>
+			<div id="dl_finished">
+				<p>Download Finished</p>
+				<div >
+					<img src="{% static 'app/images/finished.png'%}">
+						{% if mp3srcs %}
+							<div class="results">
+								{% for src in mp3srcs %}
+									<a href="{{src}}"></a>
+								{% endfor %}
+							</div>
+						{% endif %}
+					<button class="btn col-12" id="hidefinished">Download More</button>
+				</div>
 			</div>
 			{% else %}
-			<div id="dl_started" class="col-6 ">
-				<p class="display-4"> Downloading <span class="queue_count"></span> items </p>
-				<img class="rotateme" src="{% static 'app/images/loading.png'%}">
+			<div id="dl_started">
+				<p> Downloading <span class="queue_count"></span> items </p>
+				<div>
+					<img class="rotateme" src="{% static 'app/images/loading.png'%}">
+				</div>
 			</div>
 			{% endif %}
 
@@ -102,7 +114,7 @@
 		<form id="dl_form" method="post">
 			{% csrf_token %}
 			{{dl_queue.queue}}
-			<button type="submit" id="download_queue">Download</button>
+			<button type="submit" id="dl_btn" class=" btn col-12" id="download_queue">Download</button>
 		</form>
 	</div>
 	<div>
@@ -132,6 +144,7 @@
 
 		});
 		$("#dl_form input").hide();
+		$("#dl_btn").hide();
 		let currentqueue = {};
 		$("#services button").each((i,btn) => {
 			$(btn).on('click', (e) => {
@@ -149,6 +162,7 @@
 		}
 		if (getlastqueue()) {
 			currentqueue = getlastqueue();
+			console.log('getlastqueue found: ' + currentqueue);
 			alterqueue(getlastqueue());
 		}
 
@@ -178,6 +192,11 @@
 			// Update the innerHTML of all '.queue_count' elements
 			for(let i=0; i<$(".queue_count").length;i++) {
 				$(".queue_count")[i].innerHTML = queue_vid_ids.length;
+			}
+			if (queue_vid_ids.length > 0) {
+				$("#dl_btn").show();
+			} else {
+				$("#dl_btn").hide();
 			}
 
 			// Set the value of the hidden form inuput to 'queue' 
@@ -249,10 +268,9 @@
 		$("#hidefinished").on('click', ()=>{
 			window.location = window.location.href;
 		})
-		$("#download_queue").on('click', ()=>{
+		$("#download_queue").on('click', (e)=>{
 			$("#ondlfinish").show();
 			localStorage.removeItem('lastqueue');
-
 		})
 
 		$(".add_queue").each((i, btn) => {

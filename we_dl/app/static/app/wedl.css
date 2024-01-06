@@ -38,6 +38,9 @@ nav object{
 #queue img{
 	width:100%;
 }
+#queue button{
+	background-color:#32aa32ff;
+}
 #dl-list div {
 	text-align: center;
 }
@@ -128,7 +131,7 @@ div[label='yt'] .add_queue {
 	padding:0;
 }
 .hidden{
-	display: none;
+	display: none !important;
 }
 #ondlfinish {
 	position:fixed;
@@ -140,16 +143,30 @@ div[label='yt'] .add_queue {
 	justify-content: center;
 	align-items: center;
 }
-#ondlfinish div {
-	height:50%;
-	text-align: center;
-	background-color: white; 
+#ondlfinish div[id]{
+	text-align: center; 
 	vertical-align: middle
+}
+#ondlfinish p {
+	color:white;
+	font-size:1.4rem;
+	text-align: center;
+}
+#ondlfinish img {
+	display:block;
+	width:8em;
+	margin:auto;
 }
 #ondlfinish .rotateme {
 	animation: 1.5s infinite linear rotate;
-	width:10em;
+	
 
+}
+#ondlfinish button {
+	background-color:#32aa32ff;
+	color:white;
+	font-size:1rem;
+	margin:2em 0;
 }
 @keyframes rotate {
 	from {
