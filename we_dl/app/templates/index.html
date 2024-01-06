@@ -215,6 +215,13 @@
 				chkbox.checked = 'True';
 				chkbox.name = "removeFromQueue";
 				chkbox.setAttribute('identifier',identifier);
+				chkbox.addEventListener('click',(e) => {
+					let vid_id = e.target.getAttribute('identifier');
+					if(confirm("Remove  " + currentqueue[vid_id]['title']+ " from the queue?")) {
+						delete currentqueue[identifier];
+						alterqueue();
+					}
+				});
 
 				thmb.src = result['thumbnail'];
 				time.innerHTML = result['duration'];
@@ -244,6 +251,7 @@
 		})
 		$("#download_queue").on('click', ()=>{
 			$("#ondlfinish").show();
+			localStorage.removeItem('lastqueue');
 
 		})
 
@@ -262,13 +270,7 @@
 				alterqueue(currentqueue);
 			});
 		});
-		$("input[name='removeFromQueue']").each((i,chkbox)=>{
-			$(chkbox).on('click', () => {
-				console.log();
-				let vid_id = $(chkbox).attr('identifier');
-				deleteme = confirm("You sure you don't want: " + currentqueue[vid_id]['title']+ "?");
-			});
-		})
+		
 
 	</script>
 	</body>
