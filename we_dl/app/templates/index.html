@@ -132,7 +132,7 @@
 
 		});
 		$("#dl_form input").hide();
-		let dl_list = {};
+		let currentqueue = {};
 		$("#services button").each((i,btn) => {
 			$(btn).on('click', (e) => {
 				$("div[label]").hide();
@@ -140,9 +140,20 @@
 				$("div[label='" + e.target.id + "']").show();
 			});
 		});
+		//set localStorage's 'lastqueue' to active queue
+		function setlastqueue(activequeue){
+			localStorage.setItem('lastqueue',JSON.stringify(activequeue));
+		}
+		function getlastqueue() {
+			return JSON.parse(localStorage.getItem('lastqueue'))
+		}
+		if (getlastqueue()) {
+			currentqueue = getlastqueue();
+			alterqueue(getlastqueue());
+		}
 
-		//Turns element innerHTML into dictionary values for 'dl_list' 
-		function elemtodict(ele, identifier) {
+		//Convert the resulting div's metadata into dictionary values for 'queue' 
+		function elemtoqueue(ele, identifier) {
 			let title = $(ele).find("strong").html();
 			let thumbnail = $(ele).find("img").attr('src');
 			let duration = $(ele).find("p")[1];
@@ -150,7 +161,7 @@
 			let videoid = $(ele).find("p")[3];
 			
 
-			dl_list[identifier] = {
+			currentqueue[identifier] = {
 				'title': title, 
 				'thumbnail': thumbnail,
 				'duration':duration.innerHTML,
@@ -159,20 +170,25 @@
 			};
 			
 		}
-		// Onclick, repopulate queue section with what's in 'dl_list'
+		// Onclick of "+/-" btn, repopulate queue section with what's in 'activequeue'
 		function alterqueue(){
-			let dl_list_keys = Object.keys(dl_list);
+			let queue_vid_ids = Object.keys(currentqueue);
 			let list_html = $("#dl-list");
 
+			// Update the innerHTML of all '.queue_count' elements
 			for(let i=0; i<$(".queue_count").length;i++) {
-				var counter = $(".queue_count")[i];
-				counter.innerHTML = dl_list_keys.length;
+				$(".queue_count")[i].innerHTML = queue_vid_ids.length;
 			}
-			$("#id_queue").val(JSON.stringify(dl_list)) 
+
+			// Set the value of the hidden form inuput to 'queue' 
+			$("#id_queue").val(JSON.stringify(currentqueue));
+			setlastqueue(currentqueue);
+
 			list_html.empty();
 
-			dl_list_keys.forEach((key)=>{
-				let result = dl_list[key];
+			// Create the HTML for every video in 'queue'
+			queue_vid_ids.forEach((identifier)=>{
+				let result = currentqueue[identifier];
 				let row = document.createElement("div");
 
 				let div_thmb = document.createElement("div");
@@ -197,7 +213,8 @@
 
 				chkbox.type = "checkbox";
 				chkbox.checked = 'True';
-				chkbox.name = "nuosfs";
+				chkbox.name = "removeFromQueue";
+				chkbox.setAttribute('identifier',identifier);
 
 				thmb.src = result['thumbnail'];
 				time.innerHTML = result['duration'];
@@ -229,19 +246,29 @@
 			$("#ondlfinish").show();
 
 		})
+
 		$(".add_queue").each((i, btn) => {
+			//Event for "+/-" buttons
 			$(btn).on('click', (e) => {
-				if(dl_list.hasOwnProperty($(btn).attr('identifier'))) {
-					delete dl_list[$(btn).attr('identifier')];
+				//If corresponding video id is already in the queue
+				if(currentqueue.hasOwnProperty($(btn).attr('identifier'))) {
+					delete currentqueue[$(btn).attr('identifier')];
 					$(btn).html("+");
 				} else {
-					//adds elem to dl_list
-					elemtodict($(btn).parent().parent(), $(btn).attr('identifier'));
+					//adds elem to queue
+					elemtoqueue($(btn).parent().parent(), $(btn).attr('identifier'));
 					$(btn).html("-");
 				}
-				alterqueue();
+				alterqueue(currentqueue);
 			});
 		});
+		$("input[name='removeFromQueue']").each((i,chkbox)=>{
+			$(chkbox).on('click', () => {
+				console.log();
+				let vid_id = $(chkbox).attr('identifier');
+				deleteme = confirm("You sure you don't want: " + currentqueue[vid_id]['title']+ "?");
+			});
+		})
 
 	</script>
 	</body>
