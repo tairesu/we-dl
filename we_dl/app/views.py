@@ -23,7 +23,6 @@ def index(request):
 			        'song_data': (video_data),
 			        'search':form,
 			        'dl_queue':DlQueue(),
-			        'dl_list':''
 
 			    }
 			    return render(request, 'index.html', context)

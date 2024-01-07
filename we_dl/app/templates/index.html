@@ -11,10 +11,10 @@
 		<title>Hello, world!</title>
 	</head>
 	<body>
-		<div id="ondlfinish" class="hidden">
+		<div id="ondlfinish" style="display: none">
 			{% if dl_list %}
 			<div id="dl_finished">
-				<p>Download Finished</p>
+				<p>Download Finished {{dl_list}}</p>
 				<div >
 					<img src="{% static 'app/images/finished.png'%}">
 						{% if mp3srcs %}
@@ -144,7 +144,7 @@
 
 		});
 		$("#dl_form input").hide();
-		$("#dl_btn").hide();
+		$("#dl_btn").hide();		
 		let currentqueue = {};
 		$("#services button").each((i,btn) => {
 			$(btn).on('click', (e) => {
@@ -163,7 +163,7 @@
 		if (getlastqueue()) {
 			currentqueue = getlastqueue();
 			console.log('getlastqueue found: ' + currentqueue);
-			alterqueue(getlastqueue());
+			alterqueue();
 		}
 
 		//Convert the resulting div's metadata into dictionary values for 'queue' 
@@ -268,9 +268,9 @@
 		$("#hidefinished").on('click', ()=>{
 			window.location = window.location.href;
 		})
-		$("#download_queue").on('click', (e)=>{
+		$("#dl_btn").on('click', (e)=>{
+			localStorage.clear();
 			$("#ondlfinish").show();
-			localStorage.removeItem('lastqueue');
 		})
 
 		$(".add_queue").each((i, btn) => {
@@ -285,7 +285,7 @@
 					elemtoqueue($(btn).parent().parent(), $(btn).attr('identifier'));
 					$(btn).html("-");
 				}
-				alterqueue(currentqueue);
+				alterqueue();
 			});
 		});
 		

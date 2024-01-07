@@ -4,7 +4,7 @@ import yt_dlp
 from django.shortcuts import render
 from django.http import HttpResponse
 
-music_folder_path = "/home/tyro/music/"
+music_folder_path = "/media/tyro/writable/wedlmp3/"
 
 
 def on_finish(dl):
@@ -25,6 +25,7 @@ def dl(url):
 	        }]
 	}
 
-	# with yt_dlp.YoutubeDL(ydl_opts) as ydl:
- # 		ydl.download(url)
+	with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+ 		ydl.download(url)
 
+ 
