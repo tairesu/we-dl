@@ -4,17 +4,15 @@ import yt_dlp
 from django.shortcuts import render
 from django.http import HttpResponse
 
-music_folder_path = "/media/tyro/writable/wedlmp3/"
-
 
 def on_finish(dl):
 	if(dl['status'] == 'finished'):
 		message = '/nDownload Finished Converting to mp3'
-def dl(url):
+def dl(url, destination="/home/tyro/music/"):
 	ydl_opts = {
 		'xyz': '%(playlist)s',
 	    'format':'bestaudio/best',
-	    'outtmpl':'{}%(title)s.%(ext)s'.format(music_folder_path),
+	    'outtmpl':'{}%(title)s.%(ext)s'.format(destination),
 	    'noplaylist': True,
 	    'quiet':False,
 	    'progress_hooks':[on_finish],

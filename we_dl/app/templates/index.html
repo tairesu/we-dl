@@ -14,22 +14,22 @@
 		<div id="ondlfinish" style="display: none">
 			{% if dl_list %}
 			<div id="dl_finished">
-				<p>Download Finished {{dl_list}}</p>
-				<div >
+				<p>Download Finished</p>
+				<div>
 					<img src="{% static 'app/images/finished.png'%}">
-						{% if mp3srcs %}
-							<div class="results">
-								{% for src in mp3srcs %}
-									<a href="{{src}}"></a>
-								{% endfor %}
-							</div>
-						{% endif %}
+					{% if mp3srcs %}
+						<div class="results">
+						{% for src in mp3srcs %}
+							<a href="{{src}}" download>Downloading "{{src}}"</a>
+						{% endfor %}
+						</div>
+					{% endif %}
 					<button class="btn col-12" id="hidefinished">Download More</button>
 				</div>
 			</div>
 			{% else %}
 			<div id="dl_started">
-				<p> Downloading <span class="queue_count"></span> items </p>
+				<p> Downloading <span class="queue_count"></span> item(s) </p>
 				<div>
 					<img class="rotateme" src="{% static 'app/images/loading.png'%}">
 				</div>
@@ -43,20 +43,20 @@
 		</object>
 	</nav>
 	<div id="services" class="">
+		<div class="container col-sm-12 col-md-6">
 		<p><strong>1) </strong>Choose a service. </p>
-		<div class="container col-sm-12">
 			<div class="row row-cols-2">
 				<div class="col">
 					<button id="yt" class="" ></button>
 				</div>
 				<div class="col">
-					<button id="sz" class="" ></button>
+					<button id="sz" class="disabled" disabled ></button>
 				</div>
 				<div class="col">
-					<button id="sp" class="" ></button>
+					<button id="sp" class="disabled" disabled ></button>
 				</div>
 				<div class="col">
-					<button id="mc" class="" ></button>
+					<button id="mc" class="disabled" disabled></button>
 				</div>
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 	<div id="selected-service">
 		<div label="yt">
 			
-				<form method="post" id="myForm">
+				<form method="post" id="myForm" class="col-sm-12 col-md-8">
 			
 			<div class="input-group mb-3">
 					{% csrf_token %}
@@ -75,7 +75,7 @@
 					</div>
 			</div>
 				</form>
-			<div class="container">
+			<div class="container col-sm-12 col-md-8">
 				{% for song in song_data %}
 					<div class="row result">
 						<div class="col-3 thumbnail">
@@ -108,13 +108,13 @@
 	</div>
 	<div id="queue">
 		<h1 class="display-5"><span class="queue_count">0</span> in queue</h1>
-		<div id="dl-list" class=" container">
+		<div id="dl-list" class=" container col-sm-12 col-md-8">
 			
 		</div>
 		<form id="dl_form" method="post">
 			{% csrf_token %}
 			{{dl_queue.queue}}
-			<button type="submit" id="dl_btn" class=" btn col-12" id="download_queue">Download</button>
+			<button type="submit" id="dl_btn" class=" btn col-6" id="download_queue">Download</button>
 		</form>
 	</div>
 	<div>
@@ -146,7 +146,7 @@
 		$("#dl_form input").hide();
 		$("#dl_btn").hide();		
 		let currentqueue = {};
-		$("#services button").each((i,btn) => {
+		$("#services button:not(.disabled)").each((i,btn) => {
 			$(btn).on('click', (e) => {
 				$("div[label]").hide();
 				$("#selected-service").show();

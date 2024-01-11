@@ -1,5 +1,5 @@
 body {
-	background-color:blue;	
+	background-color:#313131ff;	
 }
 
 nav{
@@ -15,8 +15,11 @@ nav object{
 }
 #services{
 	width:100%;
+	height:85vh;
+	display: flex;
 	background-color: white;
 	justify-content: center;
+	align-items: center;
 	text-align: center;	
 	padding:2em;
 }
@@ -26,13 +29,17 @@ nav object{
 #selected-service, #selected-service div[label]{
 	display:none;
 }
+#myForm {
+	margin: auto;
+}
 #queue{
 	width:100%;
-	background-color: #313131ff
+	background-color: #313131ff;
+	text-align: center;
 }
 #queue h1{
 	text-align: center;
-	color:white;
+	color:#f4fffe;
 	padding:1em;
 }
 #queue img{
@@ -40,6 +47,7 @@ nav object{
 }
 #queue button{
 	background-color:#32aa32ff;
+	margin:1em;
 }
 #dl-list div {
 	text-align: center;
@@ -58,6 +66,10 @@ nav object{
 	height:8em;
 	border:none;
 	border-radius:4.5em;
+}
+#services .disabled {
+	opacity: 0.3;
+	cursor:not-allowed;
 }
 #yt {
 	background: url('images/ytmusic.png');
@@ -78,6 +90,7 @@ div[label] {
 	min-height:20rem;
 	background-color: #fdfdfdff;
 	padding:3em 2em;
+	height:100vh;
 }
 div[label='yt'] {
 	border-top:0.5em solid red;
@@ -129,6 +142,8 @@ div[label='yt'] .add_queue {
 }
 #selected-service .container{
 	padding:0;
+	height: 95%;
+	overflow-y:auto;
 }
 .hidden{
 	display: none !important;
